@@ -27,6 +27,9 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
         $value = array_shift($field);
         $v = new Validation();
         foreach ((array)$with as $withField) {
+            if (!array_key_exists($withField, $model->data[$model->alias])) {
+                continue;
+            }
             if($v->notEmpty($model->data[$model->alias][$withField])) {
                 return $v->notEmpty($value);
             }
@@ -42,7 +45,7 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
     public function katakanaAndSpace(Model $model, $field){
         $key = key($field);
         $value = array_shift($field);
-        $field = array($key => preg_replace('/　/','', $value));
+        $field = array($key => str_replace('　','', $value));
         return $model->katakanaOnly($field);
     }
 }
