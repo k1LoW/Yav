@@ -7,50 +7,61 @@
 class AdditionalValidationPatternsBehavior extends ModelBehavior {
 
     public $validationPatterns = array(
-                                       'required' => array(
-                                                           'required' => array(
-                                                                               'rule' => '/.*/',
-                                                                               'required' => true,
-                                                                               'last' => true,
-                                                                               ),
-                                                            ),
-                                       'notempty' => array(
-                                                           'notEmpty' => array('rule' => array('notEmpty'),
-                                                                               'required' => false,
-                                                                               'last' => true
-                                                                               ),
-                                                           ),
-                                       // jpn: 数値チェック用
-                                       'numeric' => array(
-                                                           'numeric' => array(
-                                                                              'rule' => '/^[0-9]+$/',
-                                                                              'last' => true,
-                                                                              ),
-                                                            ),
-
-                                       // jpn:
-                                       'zenkaku_only' => array(
-                                                              'zenkakuOnly' => array(
-                                                                                 'rule' => array('zenkakuOnly'),
-                                                                                 'allowEmpty' => true,
-                                                                                 'last' => true,
-                                                                                 ),
-                                                              ),
-                                       'katakana_only' => array(
-                                                              'katakanaOnly' => array(
-                                                                                 'rule' => array('zenkakuOnly'),
-                                                                                 'allowEmpty' => true,
-                                                                                 'last' => true,
-                                                                                 ),
-                                                              ),
-                                       'katakana_and_space' => array(
-                                                              'katakanaAndSpace' => array(
-                                                                                 'rule' => array('katakanaAndSpace'),
-                                                                                 'allowEmpty' => true,
-                                                                                 'last' => true,
-                                                                                 ),
-                                                              ),
-                                       );
+        'required' => array(
+            'required' => array(
+                'rule' => '/.*/',
+                'required' => true,
+                'last' => true,
+            ),
+        ),
+        'notempty' => array(
+            'notEmpty' => array('rule' => array('notEmpty'),
+                'required' => false,
+                'last' => true
+            ),
+        ),
+        'checkbox_check' => array(
+            'checkboxCheck' => array('rule' => '/^[^0]$/',
+                'required' => false,
+                'last' => true
+            ),
+        ),
+        // jpn: 数値チェック用
+        'numeric' => array(
+            'numeric' => array(
+                'rule' => '/^[0-9]+$/',
+                'last' => true,
+            ),
+        ),
+        'unique' => array(
+            'isUnique' => array(
+                'rule' => array('isUnique'),
+                'last' => true,
+            )
+        ),
+        // jpn:
+        'zenkaku_only' => array(
+            'zenkakuOnly' => array(
+                'rule' => array('zenkakuOnly'),
+                'allowEmpty' => true,
+                'last' => true,
+            ),
+        ),
+        'katakana_only' => array(
+            'katakanaOnly' => array(
+                'rule' => array('zenkakuOnly'),
+                'allowEmpty' => true,
+                'last' => true,
+            ),
+        ),
+        'katakana_and_space' => array(
+            'katakanaAndSpace' => array(
+                'rule' => array('katakanaAndSpace'),
+                'allowEmpty' => true,
+                'last' => true,
+            ),
+        ),
+    );
 
     /**
      * setUp
