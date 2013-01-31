@@ -39,6 +39,12 @@ class AdditionalValidationPatternsBehavior extends ModelBehavior {
                 'last' => true,
             )
         ),
+        'password_confirm' => array(
+            'compare2fieldsPassword' => array(
+                'rule' => array('compare2fields', 'password'),
+                'last' => true,
+            )
+        ),
         // jpn:
         'zenkaku_only' => array(
             'zenkakuOnly' => array(
@@ -69,6 +75,28 @@ class AdditionalValidationPatternsBehavior extends ModelBehavior {
      */
     public function setUp(Model $model){
         $this->mergeValidationPatterns($model);
+    }
+
+    /**
+     * getValidationMessages
+     *
+     */
+    public function getValidationMessages(){
+        return array(
+            'required'               => __d('yav', 'Validation Error: required'),
+            'notEmpty'               => __d('yav', 'Validation Error: notEmpty'),
+            'checkboxCheck'          => __d('yav', 'Validation Error: checkboxCheck'),
+            'numeric'                => __d('yav', 'Validation Error: numeric'),
+            'isUnique'               => __d('yav', 'Validation Error: isUnique'),
+            'compare2fieldsPassword' => __d('yav', 'Validation Error: compare2fieldsPassword'),
+            'zenkakuOnly'            => __d('yav', 'Validation Error: zenkakuOnly'),
+            'katakanaOnly'           => __d('yav', 'Validation Error: katakanaOnly'),
+            'katakanaAndSpace'       => __d('yav', 'Validation Error: katakanaAndSpace'),
+            'notEmptyFile'           => __d('yav', 'Validation Error: notEmptyFile'),
+            'checkExtension'         => __d('yav', 'Validation Error: checkExtension'),
+            'checkFileSize'          => __d('yav', 'Validation Error: checkFileSize'),
+            'checkboxCheck'          => __d('yav', 'Validation Error: checkboxCheck'),
+        );
     }
 
     /**
