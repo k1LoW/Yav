@@ -15,13 +15,23 @@ class AdditionalValidationPatternsBehavior extends ModelBehavior {
             ),
         ),
         'notempty' => array(
-            'notEmpty' => array('rule' => array('notEmpty'),
+            'notEmpty' => array(
+                'rule' => array('notEmpty'),
                 'required' => false,
                 'last' => true
             ),
         ),
         'checkbox_check' => array(
-            'checkboxCheck' => array('rule' => '/^[^0]$/',
+            'checkboxCheck' => array(
+                'rule' => '/^[^0]$/',
+                'required' => false,
+                'last' => true
+            ),
+        ),
+        'date' => array(
+            'date' => array(
+                'rule' => array('date'),
+                'allowEmpty' => true,
                 'required' => false,
                 'last' => true
             ),
@@ -88,6 +98,7 @@ class AdditionalValidationPatternsBehavior extends ModelBehavior {
             'checkboxCheck'          => __d('yav', 'Validation Error: checkboxCheck'),
             'numeric'                => __d('yav', 'Validation Error: numeric'),
             'isUnique'               => __d('yav', 'Validation Error: isUnique'),
+            'date'                   => __d('yav', 'Validation Error: date'),
             'compare2fieldsPassword' => __d('yav', 'Validation Error: compare2fieldsPassword'),
             'zenkakuOnly'            => __d('yav', 'Validation Error: zenkakuOnly'),
             'katakanaOnly'           => __d('yav', 'Validation Error: katakanaOnly'),
