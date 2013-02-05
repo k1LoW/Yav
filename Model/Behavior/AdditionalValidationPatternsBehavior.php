@@ -46,6 +46,8 @@ class AdditionalValidationPatternsBehavior extends ModelBehavior {
         'unique' => array(
             'isUnique' => array(
                 'rule' => array('isUnique'),
+                'allowEmpty' => true,
+                'required' => false,
                 'last' => true,
             )
         ),

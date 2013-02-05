@@ -48,4 +48,16 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
         $field = array($key => str_replace('　','', $value));
         return $model->katakanaOnly($field);
     }
+
+    /**
+     * inListFromConfigure
+     * jpn: Configureのarray()からinListを生成
+     *
+     * @param Model $model, $field
+     */
+    public function inListFromConfigure(Model $model, $field, $listname){
+        $value = array_shift($field);
+        $list = Configure::read($listname);
+        return Validation::inList($value, $list);
+    }
 }
