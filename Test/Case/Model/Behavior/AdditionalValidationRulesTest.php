@@ -13,10 +13,6 @@ class YavPost extends CakeTestModel {
             'notEmptyWith' => array(
                 'rule' => array('notEmptyWith', array('not_empty_with2', 'not_empty_with3'))
             )),
-        'katakana_and_space' => array(
-            'katakanaAndSpace' => array(
-                'rule' => array('katakanaAndSpace')
-            )),
     );
 }
 
@@ -68,26 +64,82 @@ class AdditionalValidationRulesTest extends CakeTestCase {
     }
 
     /**
+     * test_hiraganaOnly
+     *
+     * jpn: hiraganaOnlyだと全角スペースを許さない
+     */
+    public function test_hiraganaOnly(){
+        $this->YavPost->validate['body'] = array(
+            'hiraganaOnly' => array(
+                'rule' => array('hiraganaOnly')
+            ));
+        $data = array(
+            'YavPost' => array(
+                'body'  =>  'ひらがな　と　すぺーす',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->YavPost->validates();
+        $this->assertTrue( array_key_exists('body' , $this->YavPost->validationErrors ) );
+    }
+
+    /**
+     * test_hiraganaAndSpace
+     *
+     * jpn: hiraganaAndSpaceだと全角スペースを許す
+     */
+    public function test_hiraganaAndSpace(){
+        $this->YavPost->validate['body'] = array(
+            'hiraganaAndSpace' => array(
+                'rule' => array('hiraganaAndSpace')
+            ));
+        $data = array(
+            'YavPost' => array(
+                'body'  =>  'ひらがな　と　すぺーす',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->YavPost->validates();
+        $this->assertFalse( array_key_exists('body' , $this->YavPost->validationErrors ) );
+    }
+
+    /**
+     * test_katakanaOnly
+     *
+     * jpn: katakanaOnlyだと全角スペースを許さない
+     */
+    public function test_katakanaOnly(){
+        $this->YavPost->validate['body'] = array(
+            'katakanaOnly' => array(
+                'rule' => array('katakanaOnly')
+            ));
+        $data = array(
+            'YavPost' => array(
+                'body'  =>  'カタカナ　ト　スペース',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->YavPost->validates();
+        $this->assertTrue( array_key_exists('body' , $this->YavPost->validationErrors ) );
+    }
+
+    /**
      * test_katakanaAndSpace
      *
+     * jpn: katakanaAndSpaceだと全角スペースを許す
      */
     public function test_katakanaAndSpace(){
+        $this->YavPost->validate['body'] = array(
+            'katakanaAndSpace' => array(
+                'rule' => array('katakanaAndSpace')
+            ));
         $data = array(
             'YavPost' => array(
-                'katakana_and_space'  =>  'hiragana',
+                'body'  =>  'カタカナ　ト　スペース',
             ),
         );
         $this->assertIdentical( $this->YavPost->create( $data ) , $data);
         $this->YavPost->validates();
-        $this->assertTrue( array_key_exists('katakana_and_space' , $this->YavPost->validationErrors ) );
-
-        $data = array(
-            'YavPost' => array(
-                'katakana_and_space'  =>  'カタカナ　ト　スペース',
-            ),
-        );
-        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
-        $this->YavPost->validates();
-        $this->assertFalse( array_key_exists('katakana_and_space' , $this->YavPost->validationErrors ) );
+        $this->assertFalse( array_key_exists('body' , $this->YavPost->validationErrors ) );
     }
 }

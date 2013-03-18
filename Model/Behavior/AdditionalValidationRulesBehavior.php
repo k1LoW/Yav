@@ -65,11 +65,11 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
      * jpn: 全角ひらがなと全角スペースのみ
      *
      */
-    public function hiraganaAndSAndSpace(Model $model, $field){
+    public function hiraganaAndSpace(Model $model, $field){
         $key = key($field);
         $value = array_shift($field);
         $field = array($key => str_replace('　','', $value));
-        return $model->hiraganaAndSOnly($field);
+        return $model->hiraganaOnly($field);
     }
 
     /**
