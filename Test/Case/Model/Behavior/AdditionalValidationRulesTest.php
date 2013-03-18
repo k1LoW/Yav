@@ -8,12 +8,7 @@ class YavPost extends CakeTestModel {
         'Yav.AdditionalValidationRules'
     );
 
-    public $validate = array(
-        'not_empty_with1' => array(
-            'notEmptyWith' => array(
-                'rule' => array('notEmptyWith', array('not_empty_with2', 'not_empty_with3'))
-            )),
-    );
+    public $validate = array();
 }
 
 class AdditionalValidationRulesTest extends CakeTestCase {
@@ -41,6 +36,10 @@ class AdditionalValidationRulesTest extends CakeTestCase {
      *
      */
     public function test_notEmptyWith(){
+        $this->YavPost->validate['not_empty_with1'] = array(
+            'notEmptyWith' => array(
+                'rule' => array('notEmptyWith', array('not_empty_with2', 'not_empty_with3'))
+            ));
         $data = array(
             'YavPost' => array(
                 'title' => 'タイトル',
@@ -61,6 +60,37 @@ class AdditionalValidationRulesTest extends CakeTestCase {
         $this->assertIdentical( $this->YavPost->create( $data ) , $data);
         $this->YavPost->validates();
         $this->assertTrue( array_key_exists('not_empty_with1' , $this->YavPost->validationErrors ) );
+    }
+
+   /**
+     * test_notEmptyWithout
+     *
+     */
+    public function test_notEmptyWithout(){
+        $this->YavPost->validate['not_empty_with1'] = array(
+            'notEmptyWithout' => array(
+                'rule' => array('notEmptyWithout', array('not_empty_with2', 'not_empty_with3'))
+            ));
+        $data = array(
+            'YavPost' => array(
+                'title' => 'タイトル',
+                'not_empty_with1' => '',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->YavPost->validates();
+        $this->assertTrue( array_key_exists('not_empty_with1' , $this->YavPost->validationErrors ) );
+
+        $data = array(
+            'YavPost' => array(
+                'title' => 'タイトル',
+                'not_empty_with1' => '',
+                'not_empty_with3' => '空でない',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->YavPost->validates();
+        $this->assertFalse( array_key_exists('not_empty_with1' , $this->YavPost->validationErrors ) );
     }
 
     /**

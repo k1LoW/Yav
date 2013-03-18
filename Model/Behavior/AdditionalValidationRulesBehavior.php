@@ -53,7 +53,7 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
             if (!array_key_exists($withoutField, $model->data[$model->alias])) {
                 continue;
             }
-            if(!$v->notEmpty($model->data[$model->alias][$withoutField])) {
+            if($v->notEmpty($model->data[$model->alias][$withoutField])) {
                 return true;
             }
         }
