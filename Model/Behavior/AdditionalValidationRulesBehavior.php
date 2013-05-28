@@ -11,7 +11,7 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
      *
      * @param Model $model
      */
-    public function setUp(Model $model){
+    public function setUp(Model $model, $config = array()){
     }
 
     /**

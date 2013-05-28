@@ -91,7 +91,7 @@ class AdditionalValidationPatternsBehavior extends ModelBehavior {
      * setUp
      *
      */
-    public function setUp(Model $model){
+    public function setUp(Model $model, $config = array()){
         $this->mergeValidationPatterns($model);
     }
 
