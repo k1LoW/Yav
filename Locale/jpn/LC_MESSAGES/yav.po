@@ -40,7 +40,7 @@ msgstr "確認用パスワードが異なります"
 
 #: Plugin/Yav/Model/Behavior/AdditionalValidationPatternsBehavior.php:111
 msgid "Validation Error: passwordCurrent"
-msgstr "現在のパスワードが異なります"
+msgstr "パスワードが異なります"
 
 #: Plugin/Yav/Model/Behavior/AdditionalValidationPatternsBehavior.php:92
 msgid "Validation Error: zenkakuOnly"
