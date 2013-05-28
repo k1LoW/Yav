@@ -57,6 +57,12 @@ class AdditionalValidationPatternsBehavior extends ModelBehavior {
                 'last' => true,
             )
         ),
+        'password_current' => array(
+            'passwordCurrent' => array(
+                'rule' => array('equalToField', 'password'),
+                'last' => true,
+            )
+        ),
         // jpn:
         'zenkaku_only' => array(
             'zenkakuOnly' => array(
@@ -102,6 +108,7 @@ class AdditionalValidationPatternsBehavior extends ModelBehavior {
             'isUnique'               => __d('yav', 'Validation Error: isUnique'),
             'date'                   => __d('yav', 'Validation Error: date'),
             'compare2fieldsPassword' => __d('yav', 'Validation Error: compare2fieldsPassword'),
+            'passwordCurrent'        => __d('yav', 'Validation Error: passwordCurrent'),
             'zenkakuOnly'            => __d('yav', 'Validation Error: zenkakuOnly'),
             'katakanaOnly'           => __d('yav', 'Validation Error: katakanaOnly'),
             'katakanaAndSpace'       => __d('yav', 'Validation Error: katakanaAndSpace'),

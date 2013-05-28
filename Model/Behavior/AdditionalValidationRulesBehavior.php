@@ -114,4 +114,39 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
         }
         return Validation::inList($value, $list);
     }
+
+    /**
+     * formatJson
+     * jpn: json形式の文字列かどうか
+     *
+     */
+    public function formatJson(Model $model, $field){
+        $value = array_shift($field);
+        try {
+            $result = json_decode($value);
+            return true;
+        } catch(Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * equalToField
+     * jpn: 指定フィールドと同じ値(今のパスワードなどに使用)
+     *
+     * @param Model $model, $fiels, $current
+     */
+    public function equalToField(Model $model, $field, $current){
+        $value = array_shift($field);
+        if (empty($model->data[$model->alias][$model->primaryKey])) {
+            return false;
+        }
+        $result = $model->find('count', array(
+                'conditions' => array(
+                    "{$model->alias}.{$model->primaryKey}" => $model->data[$model->alias][$model->primaryKey],
+                    "{$model->alias}.{$current}" => $value,
+                ),
+            ));
+        return ($result === 1);
+    }
 }

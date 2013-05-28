@@ -38,6 +38,10 @@ msgstr "既に使われています"
 msgid "Validation Error: compare2fieldsPassword"
 msgstr "確認用パスワードが異なります"
 
+#: Plugin/Yav/Model/Behavior/AdditionalValidationPatternsBehavior.php:111
+msgid "Validation Error: passwordCurrent"
+msgstr "現在のパスワードが異なります"
+
 #: Plugin/Yav/Model/Behavior/AdditionalValidationPatternsBehavior.php:92
 msgid "Validation Error: zenkakuOnly"
 msgstr "全角で入力してください"
