@@ -149,4 +149,14 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
             ));
         return ($result === 1);
     }
+
+    /**
+     * formatFuzzyEmail
+     * jpn: 日本のキャリアの微妙なメールアドレスも通す
+     *
+     */
+    public function formatFuzzyEmail(Model $model, $field){
+        $value = array_shift($field);
+        return preg_match('/^[-+.\w]+@[-a-z0-9]+(\.[-a-z0-9]+)*\.[a-z]{2,6}$/i', $value);
+    }
 }

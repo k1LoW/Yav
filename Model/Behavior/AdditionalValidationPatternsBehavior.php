@@ -51,6 +51,18 @@ class AdditionalValidationPatternsBehavior extends ModelBehavior {
                 'last' => true,
             )
         ),
+        'fuzzy_email' => array(
+            'email' => array(
+                'rule' => array('formatFuzzyEmail'),
+                'last' => true,
+            )
+        ),
+        'email_confirm' => array(
+            'compare2fieldsEmail' => array(
+                'rule' => array('compare2fields', 'email'),
+                'last' => true,
+            )
+        ),
         'password_confirm' => array(
             'compare2fieldsPassword' => array(
                 'rule' => array('compare2fields', 'password'),
@@ -107,6 +119,8 @@ class AdditionalValidationPatternsBehavior extends ModelBehavior {
             'numeric'                => __d('yav', 'Validation Error: numeric'),
             'isUnique'               => __d('yav', 'Validation Error: isUnique'),
             'date'                   => __d('yav', 'Validation Error: date'),
+            'email'                  => __d('yav', 'Validation Error: email'),
+            'compare2fieldsEmail'    => __d('yav', 'Validation Error: compare2fieldsEmail'),
             'compare2fieldsPassword' => __d('yav', 'Validation Error: compare2fieldsPassword'),
             'passwordCurrent'        => __d('yav', 'Validation Error: passwordCurrent'),
             'zenkakuOnly'            => __d('yav', 'Validation Error: zenkakuOnly'),
