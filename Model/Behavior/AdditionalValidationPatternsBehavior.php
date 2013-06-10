@@ -138,7 +138,14 @@ class AdditionalValidationPatternsBehavior extends ModelBehavior {
      *
      */
     private function mergeValidationPatterns(Model $model){
-        $model->validation_patterns = Hash::merge($this->validationPatterns, $model->validation_patterns);
+        if (empty($model->validation_patterns)) {
+            return;
+        }
+        foreach ($this->validationPatterns as $key => $patterns) {
+            if (empty($model->validation_patterns[$key])) {
+                $model->validation_patterns[$key] = $this->validationPatterns[$key];
+            }
+        }
     }
 
 }
