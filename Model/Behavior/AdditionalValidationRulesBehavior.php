@@ -101,6 +101,14 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
     }
 
     /**
+     * parentModelExists
+     *
+     */
+    public function parentModelExists(Model $model, $field, $belongsToModelName){
+        return $this->recordExists($model, $field, $belongsToModelName);
+    }
+
+    /**
      * inListFromConfigure
      * jpn: Configure::write()で設定されているarray()からinListを生成
      *
@@ -111,6 +119,9 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
         if ($list !== array_values($list)) {
             // jpn: selectのoptionsにそのまま設置するような連想配列を想定
             $list = array_keys($list);
+        }
+        foreach ($list as $k => $v) {
+            $list[$k] = (string)$v;
         }
         return Validation::inList($value, $list);
     }
