@@ -61,6 +61,30 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
     }
 
     /**
+     * isUniqueWith
+     * jpn: $withに指定されたフィールドとキーに$fieldの値がユニークかどうかをチェックする
+     *
+     */
+    public function isUniqueWith(Model $model, $field, $with = array()){
+        if (empty($with)) {
+            return false;
+        }
+        $key = key($field);
+        $value = array_shift($field);
+        $fields = array(
+            "{$model->alias}.{$key}" => $value,
+        );
+        foreach ((array)$with as $withField) {
+            if (!array_key_exists($withField, $model->data[$model->alias])) {
+                return false;
+            }
+            $withValue = $model->data[$model->alias][$withField];
+            $fields["{$model->alias}.{$withField}"] = $withValue;
+        }
+        return !$model->find('count', array('conditions' => $fields, 'recursive' => -1));
+    }
+
+    /**
      * hiraganaAndSpace
      * jpn: 全角ひらがなと全角スペースのみ
      *
