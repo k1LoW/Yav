@@ -194,4 +194,13 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
         $value = array_shift($field);
         return preg_match('/^[-+.\w]+@[-a-z0-9]+(\.[-a-z0-9]+)*\.[a-z]{2,6}$/i', $value);
     }
+
+    /**
+     * allAllow
+     * jpn: validation_patternでrequiredを作成するために使用
+     *
+     */
+    public function allAllow(Model $model, $field){
+        return true;
+    }
 }

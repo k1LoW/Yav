@@ -9,7 +9,7 @@ class AdditionalValidationPatternsBehavior extends ModelBehavior {
     public $validationPatterns = array(
         'required' => array(
             'required' => array(
-                'rule' => '/.*/',
+                'rule' => array('allAllow'),
                 'required' => true,
                 'last' => true,
             ),
