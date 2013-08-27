@@ -21,6 +21,14 @@ class AdditionalValidationPatternsBehavior extends ModelBehavior {
                 'last' => true
             ),
         ),
+        'empty' => array(
+            'empty' => array(
+                'rule' => array('allDeny'),
+                'allowEmpty' => true,
+                'required' => false,
+                'last' => true
+            ),
+        ),
         'checkbox_check' => array(
             'checkboxCheck' => array(
                 'rule' => '/^[^0]$/',
@@ -115,6 +123,7 @@ class AdditionalValidationPatternsBehavior extends ModelBehavior {
         return array(
             'required'               => __d('yav', 'Validation Error: required'),
             'notEmpty'               => __d('yav', 'Validation Error: notEmpty'),
+            'empty'                  => __d('yav', 'Validation Error: empty'),
             'checkboxCheck'          => __d('yav', 'Validation Error: checkboxCheck'),
             'numeric'                => __d('yav', 'Validation Error: numeric'),
             'isUnique'               => __d('yav', 'Validation Error: isUnique'),

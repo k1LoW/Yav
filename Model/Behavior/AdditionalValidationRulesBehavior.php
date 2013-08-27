@@ -203,4 +203,12 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
     public function allAllow(Model $model, $field){
         return true;
     }
+
+    /**
+     * allDeny
+     *
+     */
+    public function allDeny(Model $model, $field){
+        return false;
+    }
 }
