@@ -26,12 +26,25 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
         $key = key($field);
         $value = array_shift($field);
         $v = new Validation();
-        foreach ((array)$with as $withField) {
-            if (!array_key_exists($withField, $model->data[$model->alias])) {
-                continue;
+        if ($with === array_values($with)) {
+            // array
+            foreach ((array)$with as $withField) {
+                if (!array_key_exists($withField, $model->data[$model->alias])) {
+                    continue;
+                }
+                if($v->notEmpty($model->data[$model->alias][$withField])) {
+                    return $v->notEmpty($value);
+                }
             }
-            if($v->notEmpty($model->data[$model->alias][$withField])) {
-                return $v->notEmpty($value);
+        } else {
+            // hash
+            foreach ((array)$with as $withField => $pattern) {
+                if (!array_key_exists($withField, $model->data[$model->alias])) {
+                    continue;
+                }
+                if(preg_match($pattern, $model->data[$model->alias][$withField])) {
+                    return $v->notEmpty($value);
+                }
             }
         }
         return true;
