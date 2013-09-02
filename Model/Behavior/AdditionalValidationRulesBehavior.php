@@ -17,6 +17,7 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
     /**
      * notEmptyWith
      * jpn: $withに指定されたフィールドに1つでも値が入っていたらnotEmptyを発動
+     *      もしくは$withに指定されたフィールドが1つでもそれぞれ指定するパターンにマッチしていたらnotEmpty発動
      *
      */
     public function notEmptyWith(Model $model, $field, $with = array()){
@@ -53,6 +54,7 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
     /**
      * notEmptyWithout
      * jpn: $withoutに指定されたフィールドに1つも値が入っていなかったらnotEmptyを発動
+     *      もしくは$withoutに指定されたフィールドが1つでもそれぞれ指定するパターンにマッチしていなかったらnotEmpty発動
      *
      */
     public function notEmptyWithout(Model $model, $field, $without = array()){
@@ -62,12 +64,25 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
         if (empty($without)) {
             return $v->notEmpty($value);
         }
-        foreach ((array)$without as $withoutField) {
-            if (!array_key_exists($withoutField, $model->data[$model->alias])) {
-                continue;
+        if ($without === array_values($without)) {
+            // array
+            foreach ((array)$without as $withoutField) {
+                if (!array_key_exists($withoutField, $model->data[$model->alias])) {
+                    continue;
+                }
+                if($v->notEmpty($model->data[$model->alias][$withoutField])) {
+                    return true;
+                }
             }
-            if($v->notEmpty($model->data[$model->alias][$withoutField])) {
-                return true;
+        } else {
+            // hash
+            foreach ((array)$without as $withoutField => $pattern) {
+                if (!array_key_exists($withoutField, $model->data[$model->alias])) {
+                    continue;
+                }
+                if(preg_match($pattern, $model->data[$model->alias][$withoutField])) {
+                    return true;
+                }
             }
         }
         return $v->notEmpty($value);

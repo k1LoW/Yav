@@ -136,6 +136,48 @@ class AdditionalValidationRulesTest extends CakeTestCase {
     }
 
     /**
+     * test_notEmptyWithoutHash
+     *
+     */
+    public function test_notEmptyWithoutHash(){
+        $this->YavPost->validate['not_empty_with1'] = array(
+            'notEmptyWithoutout' => array(
+                'rule' => array('notEmptyWithout', array('not_empty_with3' => '/^[0-9]+$/'))
+            ));
+        $data = array(
+            'YavPost' => array(
+                'title' => 'タイトル',
+                'not_empty_with1' => '',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->YavPost->validates();
+        $this->assertTrue( array_key_exists('not_empty_with1' , $this->YavPost->validationErrors ) );
+
+        $data = array(
+            'YavPost' => array(
+                'title' => 'タイトル',
+                'not_empty_with1' => '',
+                'not_empty_with3' => 'abcdef',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->YavPost->validates();
+        $this->assertTrue( array_key_exists('not_empty_with1' , $this->YavPost->validationErrors ) );
+
+        $data = array(
+            'YavPost' => array(
+                'title' => 'タイトル',
+                'not_empty_with1' => '',
+                'not_empty_with3' => '123456',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->YavPost->validates();
+        $this->assertFalse( array_key_exists('not_empty_with1' , $this->YavPost->validationErrors ) );
+    }
+
+    /**
      * test_hiraganaOnly
      *
      * jpn: hiraganaOnlyだと全角スペースを許さない
