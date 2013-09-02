@@ -48,6 +48,7 @@ class AdditionalValidationPatternsBehavior extends ModelBehavior {
         'numeric' => array(
             'numeric' => array(
                 'rule' => '/^[0-9]+$/',
+                'allowEmpty' => true,
                 'last' => true,
             ),
         ),
@@ -69,18 +70,21 @@ class AdditionalValidationPatternsBehavior extends ModelBehavior {
         'email_confirm' => array(
             'compare2fieldsEmail' => array(
                 'rule' => array('compare2fields', 'email'),
+                'allowEmpty' => true,
                 'last' => true,
             )
         ),
         'password_confirm' => array(
             'compare2fieldsPassword' => array(
                 'rule' => array('compare2fields', 'password'),
+                'allowEmpty' => true,
                 'last' => true,
             )
         ),
         'password_current' => array(
             'passwordCurrent' => array(
                 'rule' => array('equalToField', 'password'),
+                'allowEmpty' => true,
                 'last' => true,
             )
         ),
