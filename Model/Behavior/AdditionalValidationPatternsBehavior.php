@@ -62,6 +62,7 @@ class AdditionalValidationPatternsBehavior extends ModelBehavior {
         'fuzzy_email' => array(
             'email' => array(
                 'rule' => array('formatFuzzyEmail'),
+                'allowEmpty' => true,
                 'last' => true,
             )
         ),
