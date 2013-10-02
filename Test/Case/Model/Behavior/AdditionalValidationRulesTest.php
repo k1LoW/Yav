@@ -178,6 +178,26 @@ class AdditionalValidationRulesTest extends CakeTestCase {
     }
 
     /**
+     * test_notInList
+     *
+     * jpn: 指定された値が入っていたらfalse
+     */
+    public function test_notInList(){
+        $this->YavPost->validate['body'] = array(
+            'notInList' => array(
+                'rule' => array('notInList', array('hoge', 'fuga'))
+            ));
+        $data = array(
+            'YavPost' => array(
+                'body'  =>  'hoge',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->YavPost->validates();
+        $this->assertTrue( array_key_exists('body' , $this->YavPost->validationErrors ) );
+    }
+
+    /**
      * test_hiraganaOnly
      *
      * jpn: hiraganaOnlyだと全角スペースを許さない

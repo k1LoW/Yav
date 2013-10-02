@@ -90,7 +90,7 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
 
     /**
      * isUniqueWith
-     * jpn: $withに指定されたフィールドとキーに$fieldの値がユニークかどうかをチェックする
+     * jpn: $withに指定されたフィールドの値をもつレコードの中で$fieldの値がユニークかどうかをチェックする
      *
      */
     public function isUniqueWith(Model $model, $field, $with = array()){
@@ -158,6 +158,17 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
      */
     public function parentModelExists(Model $model, $field, $belongsToModelName){
         return $this->recordExists($model, $field, $belongsToModelName);
+    }
+
+    /**
+     * notInList
+     * jpn: $listに指定されていたデータを保持していたらfalse
+     *
+     * @param Model $model, $field
+     */
+    public function notInList(Model $model, $field, $list){
+        $value = array_shift($field);
+        return !Validation::inList($value, $list);
     }
 
     /**
