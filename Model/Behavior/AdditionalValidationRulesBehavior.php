@@ -90,7 +90,7 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
 
     /**
      * isUniqueWith
-     * jpn: $withに指定されたフィールドの値をもつレコードの中で$fieldの値がユニークかどうかをチェックする
+     * jpn: $withに指定されたフィールドの値も含めて$fieldの値がユニークかどうかをチェックする
      *
      */
     public function isUniqueWith(Model $model, $field, $with = array()){
@@ -228,10 +228,10 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
 
     /**
      * equalToField
-     * jpn: 登録されているデータを編集するにあたって指定フィールド$currentと同じ値かどうが(今のパスワードなどに使用)
+     * jpn: 登録されているデータを編集するにあたって指定フィールド$currentDataFieldと同じ値かどうが(今のパスワードなどに使用)
      *
      */
-    public function equalToField(Model $model, $field, $current){
+    public function equalToField(Model $model, $field, $currentDataField){
         $value = array_shift($field);
         if (empty($model->data[$model->alias][$model->primaryKey])) {
             return false;
@@ -239,7 +239,7 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
         $result = $model->find('count', array(
                 'conditions' => array(
                     "{$model->alias}.{$model->primaryKey}" => $model->data[$model->alias][$model->primaryKey],
-                    "{$model->alias}.{$current}" => $value,
+                    "{$model->alias}.{$currentDataField}" => $value,
                 ),
             ));
         return ($result === 1);
@@ -253,6 +253,40 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
     public function formatFuzzyEmail(Model $model, $field){
         $value = array_shift($field);
         return preg_match('/^[-+.\w]+@[-a-z0-9]+(\.[-a-z0-9]+)*\.[a-z]{2,6}$/i', $value);
+    }
+
+    /**
+     * compareWith
+     * jpn: $fieldと$withFieldを$operatorで比較する
+     *
+     */
+    public function compareWith(Model $model, $field, $withField, $operator){
+        if (!in_array($operator, array('eq', 'lt', 'gt', 'le', 'ge'))) {
+            return false;
+        }
+        if (!isset($model->data[$model->alias][$withField])) {
+            return false;
+        }
+        $value = array_shift($field);
+        $withValue = $model->data[$model->alias][$withField];
+        switch($operator) {
+            case 'eq':
+                return ($value == $withValue);
+                break;
+            case 'lt':
+                return ($value < $withValue);
+                break;
+            case 'gt':
+                return ($value > $withValue);
+                break;
+            case 'le':
+                return ($value <= $withValue);
+                break;
+            case 'ge':
+                return ($value >= $withValue);
+                break;
+        }
+        return false;
     }
 
     /**

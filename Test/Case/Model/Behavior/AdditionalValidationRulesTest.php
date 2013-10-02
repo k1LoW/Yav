@@ -297,4 +297,52 @@ class AdditionalValidationRulesTest extends CakeTestCase {
         $this->YavPost->validates();
         $this->assertFalse( array_key_exists('body' , $this->YavPost->validationErrors ) );
     }
+
+    /**
+     * test_compareWith
+     *
+     */
+    public function test_compareWith(){
+        $this->YavPost->validate['value1'] = array(
+            'compareWith' => array(
+                'rule' => array('compareWith', 'value2', 'eq')
+            ));
+        $data = array(
+            'YavPost' => array(
+                'value1'  =>  '1',
+                'value2'  =>  '1',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->YavPost->validates();
+        $this->assertFalse( array_key_exists('value1' , $this->YavPost->validationErrors ) );
+
+        $this->YavPost->validate['value1'] = array(
+            'compareWith' => array(
+                'rule' => array('compareWith', 'value2', 'lt')
+            ));
+        $data = array(
+            'YavPost' => array(
+                'value1'  =>  '1',
+                'value2'  =>  '2',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->YavPost->validates();
+        $this->assertFalse( array_key_exists('value1' , $this->YavPost->validationErrors ) );
+
+        $this->YavPost->validate['value1'] = array(
+            'compareWith' => array(
+                'rule' => array('compareWith', 'value2', 'gt')
+            ));
+        $data = array(
+            'YavPost' => array(
+                'value1'  =>  '1',
+                'value2'  =>  '0',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->YavPost->validates();
+        $this->assertFalse( array_key_exists('value1' , $this->YavPost->validationErrors ) );
+    }
 }
