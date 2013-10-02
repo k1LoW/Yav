@@ -162,13 +162,36 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
 
     /**
      * notInList
-     * jpn: $listに指定されていたデータを保持していたらfalse
+     * jpn: $listに指定されている値を保持していたらfalse
      *
-     * @param Model $model, $field
      */
     public function notInList(Model $model, $field, $list){
         $value = array_shift($field);
         return !Validation::inList($value, $list);
+    }
+
+    /**
+     * inListRegex
+     * jpn: $listRegexに指定されている正規表現にマッチしたらtrue
+     *
+     */
+    public function inListRegex(Model $model, $field, $listRegex){
+        $value = array_shift($field);
+        foreach ($listRegex as $regex) {
+            if (preg_match($regex, $value)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * notInListRegex
+     * jpn: $listRegexに指定されている正規表現にマッチしたらfalse
+     *
+     */
+    public function notInListRegex(Model $model, $field, $listRegex){
+        return !$this->inListRegex($model, $field, $listRegex);
     }
 
     /**

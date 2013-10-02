@@ -198,6 +198,27 @@ class AdditionalValidationRulesTest extends CakeTestCase {
     }
 
     /**
+     * test_inListRegex
+     * description
+     *
+     * @param 
+     */
+    public function test_inListRegex(){
+        $this->YavPost->validate['body'] = array(
+            'inListRegex' => array(
+                'rule' => array('inListRegex', array('/ho.e/', '/fuga/'))
+            ));
+        $data = array(
+            'YavPost' => array(
+                'body'  =>  'hoke',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->YavPost->validates();
+        $this->assertFalse( array_key_exists('body' , $this->YavPost->validationErrors ) );
+    }
+
+    /**
      * test_hiraganaOnly
      *
      * jpn: hiraganaOnlyだと全角スペースを許さない
