@@ -219,19 +219,17 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
      */
     public function formatJson(Model $model, $field){
         $value = array_shift($field);
-        try {
-            $result = json_decode($value);
-            return true;
-        } catch(Exception $e) {
+        $result = json_decode($value);
+        if ($result === null) {
             return false;
         }
+        return true;
     }
 
     /**
      * equalToField
-     * jpn: 指定フィールドと同じ値(今のパスワードなどに使用)
+     * jpn: 登録されているデータを編集するにあたって指定フィールド$currentと同じ値かどうが(今のパスワードなどに使用)
      *
-     * @param Model $model, $fiels, $current
      */
     public function equalToField(Model $model, $field, $current){
         $value = array_shift($field);
