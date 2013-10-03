@@ -89,6 +89,26 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
     }
 
     /**
+     * uniqueEachOther
+     * jpn: $fieldと$fieldsに指定されたフィールドの値がお互いにユニークかどうか
+     *
+     */
+    public function uniqueEachOther(Model $model, $field, $fields = array()){
+        if (empty($fields)) {
+            return false;
+        }
+        $values = array();
+        $values[] = array_shift($field);
+        foreach ((array)$fields as $f) {
+            if (!array_key_exists($f, $model->data[$model->alias])) {
+                return false;
+            }
+            $values[] = $model->data[$model->alias][$f];
+        }
+        return ((count($fields) + 1) === count(array_unique($values)));
+    }
+
+    /**
      * isUniqueTogether
      * jpn: $fieldsに指定されたフィールドの値も含めて$fieldの値がユニークかどうかをチェックする
      *
