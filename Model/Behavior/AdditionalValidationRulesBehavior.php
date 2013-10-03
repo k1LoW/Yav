@@ -89,27 +89,27 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
     }
 
     /**
-     * isUniqueWith
-     * jpn: $withに指定されたフィールドの値も含めて$fieldの値がユニークかどうかをチェックする
+     * isUniqueTogether
+     * jpn: $fieldsに指定されたフィールドの値も含めて$fieldの値がユニークかどうかをチェックする
      *
      */
-    public function isUniqueWith(Model $model, $field, $with = array()){
-        if (empty($with)) {
+    public function isUniqueTogether(Model $model, $field, $fields = array()){
+        if (empty($fields)) {
             return false;
         }
         $key = key($field);
         $value = array_shift($field);
-        $fields = array(
+        $conditions = array(
             "{$model->alias}.{$key}" => $value,
         );
-        foreach ((array)$with as $withField) {
-            if (!array_key_exists($withField, $model->data[$model->alias])) {
+        foreach ((array)$fields as $f) {
+            if (!array_key_exists($f, $model->data[$model->alias])) {
                 return false;
             }
-            $withValue = $model->data[$model->alias][$withField];
-            $fields["{$model->alias}.{$withField}"] = $withValue;
+            $v = $model->data[$model->alias][$f];
+            $conditions["{$model->alias}.{$f}"] = $v;
         }
-        return !$model->find('count', array('conditions' => $fields, 'recursive' => -1));
+        return !$model->find('count', array('conditions' => $conditions, 'recursive' => -1));
     }
 
     /**
