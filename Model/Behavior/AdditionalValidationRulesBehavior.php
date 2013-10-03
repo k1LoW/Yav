@@ -97,15 +97,17 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
         if (empty($fields)) {
             return false;
         }
+        $key = key($field);
         $values = array();
         $values[] = array_shift($field);
+        (array)$fields[] = $key;
         foreach ((array)$fields as $f) {
             if (!array_key_exists($f, $model->data[$model->alias])) {
                 return false;
             }
             $values[] = $model->data[$model->alias][$f];
         }
-        return ((count($fields) + 1) === count(array_unique($values)));
+        return (count(array_unique($fields)) === count(array_unique($values)));
     }
 
     /**
