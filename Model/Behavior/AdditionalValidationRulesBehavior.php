@@ -26,15 +26,14 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
         }
         $key = key($field);
         $value = array_shift($field);
-        $v = new Validation();
         if ($with === array_values($with)) {
             // array
             foreach ((array)$with as $withField) {
                 if (!array_key_exists($withField, $model->data[$model->alias])) {
                     continue;
                 }
-                if($v->notEmpty($model->data[$model->alias][$withField])) {
-                    return $v->notEmpty($value);
+                if(Validation::notEmpty($model->data[$model->alias][$withField])) {
+                    return Validation::notEmpty($value);
                 }
             }
         } else {
@@ -44,7 +43,7 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
                     continue;
                 }
                 if(preg_match($pattern, $model->data[$model->alias][$withField])) {
-                    return $v->notEmpty($value);
+                    return Validation::notEmpty($value);
                 }
             }
         }
@@ -60,9 +59,8 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
     public function notEmptyWithout(Model $model, $field, $without = array()){
         $key = key($field);
         $value = array_shift($field);
-        $v = new Validation();
         if (empty($without)) {
-            return $v->notEmpty($value);
+            return Validation::notEmpty($value);
         }
         if ($without === array_values($without)) {
             // array
@@ -70,7 +68,7 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
                 if (!array_key_exists($withoutField, $model->data[$model->alias])) {
                     continue;
                 }
-                if($v->notEmpty($model->data[$model->alias][$withoutField])) {
+                if(Validation::notEmpty($model->data[$model->alias][$withoutField])) {
                     return true;
                 }
             }
@@ -85,7 +83,7 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
                 }
             }
         }
-        return $v->notEmpty($value);
+        return Validation::notEmpty($value);
     }
 
     /**
@@ -101,11 +99,16 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
         $values = array();
         $values[] = array_shift($field);
         (array)$fields[] = $key;
-        foreach ((array)$fields as $f) {
+        foreach ((array)$fields as $k => $f) {
             if (!array_key_exists($f, $model->data[$model->alias])) {
                 return false;
             }
-            $values[] = $model->data[$model->alias][$f];
+            $v = $model->data[$model->alias][$f];
+            if (!Validation::notEmpty($v)) {
+                unset($fields[$k]);
+                continue;
+            }
+            $values[] = $v;
         }
         return (count(array_unique($fields)) === count(array_unique($values)));
     }

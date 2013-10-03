@@ -184,13 +184,24 @@ class AdditionalValidationRulesTest extends CakeTestCase {
     public function test_uniqueEachOther(){
         $this->YavPost->validate['value1'] = array(
             'uniqueEachOther' => array(
-                'rule' => array('uniqueEachOther', array('value2', 'value3'))
+                'rule' => array('uniqueEachOther', array('value1', 'value2', 'value3'))
             ));
         $data = array(
             'YavPost' => array(
                 'value1'  =>  'foo',
                 'value2'  =>  'bar',
                 'value3'  =>  'baz',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->YavPost->validates();
+        $this->assertFalse( array_key_exists('value1' , $this->YavPost->validationErrors ) );
+
+        $data = array(
+            'YavPost' => array(
+                'value1'  =>  'foo',
+                'value2'  =>  'bar',
+                'value3'  =>  '',
             ),
         );
         $this->assertIdentical( $this->YavPost->create( $data ) , $data);
