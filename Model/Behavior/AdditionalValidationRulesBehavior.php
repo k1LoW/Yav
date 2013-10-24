@@ -161,6 +161,17 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
     }
 
     /**
+     * notInList
+     * jpn: $listに指定されている値だったらfalse
+     *
+     * @param Model $model, $field, $list
+     */
+    public function notInList(Model $model, $field, $list, $strict = true){
+        $value = array_shift($field);
+        return !Validation::inList($value, $list, $strict);
+    }
+
+    /**
      * inListFromConfigure
      * jpn: Configure::write()で設定されているarray()からinListを生成
      *
@@ -185,12 +196,11 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
      */
     public function formatJson(Model $model, $field){
         $value = array_shift($field);
-        try {
-            $result = json_decode($value);
-            return true;
-        } catch(Exception $e) {
+        $result = json_decode($value);
+        if ($result === null) {
             return false;
         }
+        return true;
     }
 
     /**
