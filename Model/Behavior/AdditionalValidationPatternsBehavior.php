@@ -44,6 +44,13 @@ class AdditionalValidationPatternsBehavior extends ModelBehavior {
                 'last' => true
             ),
         ),
+        'alpha_numeric' => array(
+            'alphaNumeric' => array(
+                'rule' => array('alphaNumber'),
+                'allowEmpty' => true,
+                'last' => true,
+            ),
+        ),
         // jpn: 数値チェック用
         'numeric' => array(
             'numeric' => array(
@@ -153,7 +160,7 @@ class AdditionalValidationPatternsBehavior extends ModelBehavior {
      */
     private function mergeValidationPatterns(Model $model){
         if (empty($model->validation_patterns)) {
-            return;
+            $model->validation_patterns = array();
         }
         foreach ($this->validationPatterns as $key => $patterns) {
             if (empty($model->validation_patterns[$key])) {

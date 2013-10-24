@@ -26,15 +26,14 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
         }
         $key = key($field);
         $value = array_shift($field);
-        $v = new Validation();
         if ($with === array_values($with)) {
             // array
             foreach ((array)$with as $withField) {
                 if (!array_key_exists($withField, $model->data[$model->alias])) {
                     continue;
                 }
-                if($v->notEmpty($model->data[$model->alias][$withField])) {
-                    return $v->notEmpty($value);
+                if(Validation::notEmpty($model->data[$model->alias][$withField])) {
+                    return Validation::notEmpty($value);
                 }
             }
         } else {
@@ -44,7 +43,7 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
                     continue;
                 }
                 if(preg_match($pattern, $model->data[$model->alias][$withField])) {
-                    return $v->notEmpty($value);
+                    return Validation::notEmpty($value);
                 }
             }
         }
@@ -60,9 +59,8 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
     public function notEmptyWithout(Model $model, $field, $without = array()){
         $key = key($field);
         $value = array_shift($field);
-        $v = new Validation();
         if (empty($without)) {
-            return $v->notEmpty($value);
+            return Validation::notEmpty($value);
         }
         if ($without === array_values($without)) {
             // array
@@ -70,7 +68,7 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
                 if (!array_key_exists($withoutField, $model->data[$model->alias])) {
                     continue;
                 }
-                if($v->notEmpty($model->data[$model->alias][$withoutField])) {
+                if(Validation::notEmpty($model->data[$model->alias][$withoutField])) {
                     return true;
                 }
             }
@@ -85,31 +83,58 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
                 }
             }
         }
-        return $v->notEmpty($value);
+        return Validation::notEmpty($value);
     }
 
     /**
-     * isUniqueWith
-     * jpn: $withに指定されたフィールドとキーに$fieldの値がユニークかどうかをチェックする
+     * uniqueEachOther
+     * jpn: $fieldと$fieldsに指定されたフィールドの値がお互いにユニークかどうか
      *
      */
-    public function isUniqueWith(Model $model, $field, $with = array()){
-        if (empty($with)) {
+    public function uniqueEachOther(Model $model, $field, $fields = array()){
+        if (empty($fields)) {
+            return false;
+        }
+        $key = key($field);
+        $values = array();
+        $values[] = array_shift($field);
+        (array)$fields[] = $key;
+        foreach ((array)$fields as $k => $f) {
+            if (!array_key_exists($f, $model->data[$model->alias])) {
+                return false;
+            }
+            $v = $model->data[$model->alias][$f];
+            if (!Validation::notEmpty($v)) {
+                unset($fields[$k]);
+                continue;
+            }
+            $values[] = $v;
+        }
+        return (count(array_unique($fields)) === count(array_unique($values)));
+    }
+
+    /**
+     * isUniqueTogether
+     * jpn: $fieldsに指定されたフィールドの値も含めて$fieldの値がユニークかどうかをチェックする
+     *
+     */
+    public function isUniqueTogether(Model $model, $field, $fields = array()){
+        if (empty($fields)) {
             return false;
         }
         $key = key($field);
         $value = array_shift($field);
-        $fields = array(
+        $conditions = array(
             "{$model->alias}.{$key}" => $value,
         );
-        foreach ((array)$with as $withField) {
-            if (!array_key_exists($withField, $model->data[$model->alias])) {
+        foreach ((array)$fields as $f) {
+            if (!array_key_exists($f, $model->data[$model->alias])) {
                 return false;
             }
-            $withValue = $model->data[$model->alias][$withField];
-            $fields["{$model->alias}.{$withField}"] = $withValue;
+            $v = $model->data[$model->alias][$f];
+            $conditions["{$model->alias}.{$f}"] = $v;
         }
-        return !$model->find('count', array('conditions' => $fields, 'recursive' => -1));
+        return !$model->find('count', array('conditions' => $conditions, 'recursive' => -1));
     }
 
     /**
@@ -162,13 +187,36 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
 
     /**
      * notInList
-     * jpn: $listに指定されている値だったらfalse
+     * jpn: $listに指定されている値を保持していたらfalse
      *
-     * @param Model $model, $field, $list
      */
-    public function notInList(Model $model, $field, $list, $strict = true){
+    public function notInList(Model $model, $field, $list){
         $value = array_shift($field);
-        return !Validation::inList($value, $list, $strict);
+        return !Validation::inList($value, $list);
+    }
+
+    /**
+     * inListRegex
+     * jpn: $listRegexに指定されている正規表現にマッチしたらtrue
+     *
+     */
+    public function inListRegex(Model $model, $field, $listRegex){
+        $value = array_shift($field);
+        foreach ($listRegex as $regex) {
+            if (preg_match($regex, $value)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * notInListRegex
+     * jpn: $listRegexに指定されている正規表現にマッチしたらfalse
+     *
+     */
+    public function notInListRegex(Model $model, $field, $listRegex){
+        return !$this->inListRegex($model, $field, $listRegex);
     }
 
     /**
@@ -205,11 +253,10 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
 
     /**
      * equalToField
-     * jpn: 指定フィールドと同じ値(今のパスワードなどに使用)
+     * jpn: 登録されているデータを編集するにあたって指定フィールド$currentDataFieldと同じ値かどうが(今のパスワードなどに使用)
      *
-     * @param Model $model, $fiels, $current
      */
-    public function equalToField(Model $model, $field, $current){
+    public function equalToField(Model $model, $field, $currentDataField){
         $value = array_shift($field);
         if (empty($model->data[$model->alias][$model->primaryKey])) {
             return false;
@@ -217,7 +264,7 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
         $result = $model->find('count', array(
                 'conditions' => array(
                     "{$model->alias}.{$model->primaryKey}" => $model->data[$model->alias][$model->primaryKey],
-                    "{$model->alias}.{$current}" => $value,
+                    "{$model->alias}.{$currentDataField}" => $value,
                 ),
             ));
         return ($result === 1);
@@ -231,6 +278,40 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
     public function formatFuzzyEmail(Model $model, $field){
         $value = array_shift($field);
         return preg_match('/^[-+.\w]+@[-a-z0-9]+(\.[-a-z0-9]+)*\.[a-z]{2,6}$/i', $value);
+    }
+
+    /**
+     * compareWith
+     * jpn: $fieldと$withFieldを$operatorで比較する
+     *
+     */
+    public function compareWith(Model $model, $field, $withField, $operator){
+        if (!in_array($operator, array('eq', 'lt', 'gt', 'le', 'ge'))) {
+            return false;
+        }
+        if (!isset($model->data[$model->alias][$withField])) {
+            return false;
+        }
+        $value = array_shift($field);
+        $withValue = $model->data[$model->alias][$withField];
+        switch($operator) {
+            case 'eq':
+                return ($value == $withValue);
+                break;
+            case 'lt':
+                return ($value < $withValue);
+                break;
+            case 'gt':
+                return ($value > $withValue);
+                break;
+            case 'le':
+                return ($value <= $withValue);
+                break;
+            case 'ge':
+                return ($value >= $withValue);
+                break;
+        }
+        return false;
     }
 
     /**

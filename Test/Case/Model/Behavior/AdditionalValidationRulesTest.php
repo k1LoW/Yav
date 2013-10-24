@@ -178,6 +178,90 @@ class AdditionalValidationRulesTest extends CakeTestCase {
     }
 
     /**
+     * test_uniqueEachOther
+     *
+     */
+    public function test_uniqueEachOther(){
+        $this->YavPost->validate['value1'] = array(
+            'uniqueEachOther' => array(
+                'rule' => array('uniqueEachOther', array('value1', 'value2', 'value3'))
+            ));
+        $data = array(
+            'YavPost' => array(
+                'value1'  =>  'foo',
+                'value2'  =>  'bar',
+                'value3'  =>  'baz',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->YavPost->validates();
+        $this->assertFalse( array_key_exists('value1' , $this->YavPost->validationErrors ) );
+
+        $data = array(
+            'YavPost' => array(
+                'value1'  =>  'foo',
+                'value2'  =>  'bar',
+                'value3'  =>  '',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->YavPost->validates();
+        $this->assertFalse( array_key_exists('value1' , $this->YavPost->validationErrors ) );
+
+        $data = array(
+            'YavPost' => array(
+                'value1'  =>  'foo',
+                'value2'  =>  'bar',
+                'value3'  =>  'bar',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->YavPost->validates();
+        $this->assertTrue( array_key_exists('value1' , $this->YavPost->validationErrors ) );
+    }
+
+    /**
+     * test_notInList
+     *
+     * jpn: 指定された値が入っていたらfalse
+     */
+    public function test_notInList(){
+        $this->YavPost->validate['body'] = array(
+            'notInList' => array(
+                'rule' => array('notInList', array('hoge', 'fuga'))
+            ));
+        $data = array(
+            'YavPost' => array(
+                'body'  =>  'hoge',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->YavPost->validates();
+        $this->assertTrue( array_key_exists('body' , $this->YavPost->validationErrors ) );
+    }
+
+    /**
+     * test_inListRegex
+     * description
+     *
+     * @param 
+     */
+    public function test_inListRegex(){
+        $this->YavPost->validate['body'] = array(
+            'inListRegex' => array(
+                'rule' => array('inListRegex', array('/ho.e/', '/fuga/'))
+            ));
+        $data = array(
+            'YavPost' => array(
+                'body'  =>  'hoke',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->YavPost->validates();
+        $this->assertFalse( array_key_exists('body' , $this->YavPost->validationErrors ) );
+    }
+
+    /**
      * test_hiraganaOnly
      *
      * jpn: hiraganaOnlyだと全角スペースを許さない
@@ -255,5 +339,53 @@ class AdditionalValidationRulesTest extends CakeTestCase {
         $this->assertIdentical( $this->YavPost->create( $data ) , $data);
         $this->YavPost->validates();
         $this->assertFalse( array_key_exists('body' , $this->YavPost->validationErrors ) );
+    }
+
+    /**
+     * test_compareWith
+     *
+     */
+    public function test_compareWith(){
+        $this->YavPost->validate['value1'] = array(
+            'compareWith' => array(
+                'rule' => array('compareWith', 'value2', 'eq')
+            ));
+        $data = array(
+            'YavPost' => array(
+                'value1'  =>  '1',
+                'value2'  =>  '1',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->YavPost->validates();
+        $this->assertFalse( array_key_exists('value1' , $this->YavPost->validationErrors ) );
+
+        $this->YavPost->validate['value1'] = array(
+            'compareWith' => array(
+                'rule' => array('compareWith', 'value2', 'lt')
+            ));
+        $data = array(
+            'YavPost' => array(
+                'value1'  =>  '1',
+                'value2'  =>  '2',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->YavPost->validates();
+        $this->assertFalse( array_key_exists('value1' , $this->YavPost->validationErrors ) );
+
+        $this->YavPost->validate['value1'] = array(
+            'compareWith' => array(
+                'rule' => array('compareWith', 'value2', 'gt')
+            ));
+        $data = array(
+            'YavPost' => array(
+                'value1'  =>  '1',
+                'value2'  =>  '0',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->YavPost->validates();
+        $this->assertFalse( array_key_exists('value1' , $this->YavPost->validationErrors ) );
     }
 }
