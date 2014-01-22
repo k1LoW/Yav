@@ -315,6 +315,34 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
     }
 
     /**
+     * checkSeparateDate
+     * jpn: フィールドが分離している日付設定にcheckdateをかける
+     *
+     */
+    public function checkSeparateDate(Model $model, $field, $dateFields){
+        if (empty($dateFields)) {
+            return false;
+        }
+        if (array_keys($dateFields) != array('year', 'month', 'day')) {
+            return false;
+        }
+        if (!array_key_exists($dateFields['year'], $model->data[$model->alias])) {
+            return false;
+        }
+        if (!array_key_exists($dateFields['month'], $model->data[$model->alias])) {
+            return false;
+        }
+        if (!array_key_exists($dateFields['day'], $model->data[$model->alias])) {
+            return false;
+        }
+        return checkdate(
+            $model->data[$model->alias][$dateFields['month']],
+            $model->data[$model->alias][$dateFields['day']],
+            $model->data[$model->alias][$dateFields['year']]
+        );
+    }
+
+    /**
      * allAllow
      * jpn: validation_patternでrequiredを作成するために使用
      *

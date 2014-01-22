@@ -388,4 +388,36 @@ class AdditionalValidationRulesTest extends CakeTestCase {
         $this->YavPost->validates();
         $this->assertFalse( array_key_exists('value1' , $this->YavPost->validationErrors ) );
     }
+
+    /**
+     * test_checkSeparateDate
+     *
+      */
+    public function test_checkSeparateDate(){
+        $this->YavPost->validate['nen'] = array(
+            'birthday' => array(
+                'rule' => array('checkSeparateDate', array('year' => 'nen', 'month' => 'tsuki', 'day' => 'hi'))
+            ));
+        $data = array(
+            'YavPost' => array(
+                'nen'  =>  '1980',
+                'tsuki'  =>  '2',
+                'hi'  =>  '31',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->YavPost->validates();
+        $this->assertTrue( array_key_exists('nen' , $this->YavPost->validationErrors ) );
+
+        $data = array(
+            'YavPost' => array(
+                'nen'  =>  '1980',
+                'tsuki'  =>  '4',
+                'hi'  =>  '4',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->YavPost->validates();
+        $this->assertFalse( array_key_exists('nen' , $this->YavPost->validationErrors ) );
+    }
 }
