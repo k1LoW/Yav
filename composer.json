@@ -12,26 +12,6 @@
                 "role": "Author"
             }
     ],
-    "repositories": [
-        {
-            "type":"package",
-            "package": {
-                "type" : "cakephp-plugin",
-                "name": "ichikaway/cakeplus",
-                "source": {
-                    "url": "https://github.com/ichikaway/cakeplus",
-                    "type": "git",
-                    "reference": "2.0"
-                },
-                "require":{
-                   "composer/installers": "*"
-                },
-                "extra": {
-                     "installer-name": "Cakeplus"
-                }
-            }
-        }
-    ],
     "require": {
         "ichikaway/cakeplus": "2.0.*@dev",
         "composer/installers": "*"
