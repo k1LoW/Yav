@@ -1,0 +1,39 @@
+{
+    "name": "k1low/yav",
+    "description": "Yav: Yer Another Validation Set",
+    "type": "cakephp-plugin",
+    "keywords": ["cakephp", "validation"],
+    "homepage": "https://github.com/k1LoW/Yav",
+    "license": "MIT",
+    "authors": [
+        {
+                "name": "Ken'ichiro Oyama",
+                "homepage": "https://github.com/k1LoW",
+                "role": "Author"
+            }
+    ],
+    "repositories": [
+        {
+            "type":"package",
+            "package": {
+                "type" : "cakephp-plugin",
+                "name": "ichikaway/cakeplus",
+                "source": {
+                    "url": "https://github.com/ichikaway/cakeplus",
+                    "type": "git",
+                    "reference": "2.0"
+                },
+                "require":{
+                   "composer/installers": "*"
+                },
+                "extra": {
+                     "installer-name": "Cakeplus"
+                }
+            }
+        }
+    ],
+    "require": {
+        "ichikaway/cakeplus": "2.0.*@dev",
+        "composer/installers": "*"
+    }
+}
