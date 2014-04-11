@@ -348,7 +348,7 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
      *
      */
     public function cutField(Model $model, $field){
-         $key = key($field);
+        $key = key($field);
         if (array_key_exists($key, $model->data[$model->alias])) {
             unset($model->data[$model->alias][$key]);
         }
