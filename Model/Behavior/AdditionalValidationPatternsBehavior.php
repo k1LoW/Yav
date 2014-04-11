@@ -95,6 +95,14 @@ class AdditionalValidationPatternsBehavior extends ModelBehavior {
                 'last' => true,
             )
         ),
+        'json' => array(
+            'formatJson' => array(
+                'rule' => array('formatJson'),
+                'allowEmpty' => true,
+                'required' => false,
+                'last' => true,
+            )
+        ),
         // jpn:
         'zenkaku_only' => array(
             'zenkakuOnly' => array(
