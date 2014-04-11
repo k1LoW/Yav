@@ -49,8 +49,10 @@ class ForceValidationManageTest extends CakeTestCase {
         );
         $this->assertIdentical( $this->YavPost->create( $data ) , $data);
         $this->assertTrue( array_key_exists('body' , $this->YavPost->data['YavPost'] ) );
-        $this->YavPost->validates();
-        $this->assertFalse( array_key_exists('body' , $this->YavPost->data['YavPost'] ) );
+        $this->YavPost->save();
+        $id = $this->YavPost->getLastInsertID();
+        $result = $this->YavPost->findById($id);
+        $this->assertTrue( empty($this->YavPost->data['YavPost']['body'] ) );
     }
 
 }

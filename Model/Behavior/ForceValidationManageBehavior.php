@@ -7,10 +7,10 @@
 class ForceValidationManageBehavior extends ModelBehavior {
 
     /**
-     * beforeValidate
+     * beforeSave
      *
      */
-    public function beforeValidate(Model $model, $options = array()) {
+    public function beforeSave(Model $model, $options = array()) {
         foreach ($model->data[$model->alias] as $fieldName => $value) {
             if (!array_key_exists($fieldName, $model->validate)) {
                 unset($model->data[$model->alias][$fieldName]);
