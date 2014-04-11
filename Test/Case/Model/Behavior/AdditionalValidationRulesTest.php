@@ -244,7 +244,7 @@ class AdditionalValidationRulesTest extends CakeTestCase {
      * test_inListRegex
      * description
      *
-     * @param 
+     * @param
      */
     public function test_inListRegex(){
         $this->YavPost->validate['body'] = array(
@@ -420,4 +420,27 @@ class AdditionalValidationRulesTest extends CakeTestCase {
         $this->YavPost->validates();
         $this->assertFalse( array_key_exists('nen' , $this->YavPost->validationErrors ) );
     }
+
+    /**
+     * test_cutField
+     *
+     * jpn: 指定のフィールドの値を保存されないよう無視するために消す
+     */
+    public function test_cutField(){
+        $this->YavPost->validate['title'] = array(
+            'cut' => array(
+                'rule' => array('cutField')
+            ));
+        $data = array(
+            'YavPost' => array(
+                'title' => 'hoge',
+                'body'  =>  'hoge',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->assertTrue( array_key_exists('title' , $this->YavPost->data['YavPost'] ) );
+        $this->YavPost->validates();
+        $this->assertFalse( array_key_exists('title' , $this->YavPost->data['YavPost'] ) );
+    }
+
 }

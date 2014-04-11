@@ -343,6 +343,19 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
     }
 
     /**
+     * cutField
+     * jpn: 指定のフィールドの値を保存されないよう無視するために消す
+     *
+     */
+    public function cutField(Model $model, $field){
+         $key = key($field);
+        if (array_key_exists($key, $model->data[$model->alias])) {
+            unset($model->data[$model->alias][$key]);
+        }
+        return true;
+    }
+
+    /**
      * allAllow
      * jpn: validation_patternでrequiredを作成するために使用
      *
