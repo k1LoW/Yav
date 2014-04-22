@@ -238,12 +238,54 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
     }
 
     /**
+     * formatNumeric
+     * jpn: AdditionalValidationPatternsBehavior用にemptyのときはtrue
+     *
+     */
+    public function formatNumeric(Model $model, $field){
+        $value = array_shift($field);
+        if (!Validation::notEmpty($value)) {
+            return true;
+        }
+        return Validation::numeric($value);
+    }
+
+    /**
+     * formatAlphaNumber
+     * jpn: AdditionalValidationPatternsBehavior用にemptyのときはtrue
+     *
+     */
+    public function formatAlphaNumber(Model $model, $field){
+        $value = array_shift($field);
+        if (!Validation::notEmpty($value)) {
+            return true;
+        }
+        return Validation::alphaNumber($value);
+    }
+
+    /**
+     * formatDate
+     * jpn: AdditionalValidationPatternsBehavior用にemptyのときはtrue
+     *
+     */
+    public function formatDate(Model $model, $field){
+        $value = array_shift($field);
+        if (!Validation::notEmpty($value)) {
+            return true;
+        }
+        return Validation::date($value);
+    }
+
+    /**
      * formatJson
      * jpn: json形式の文字列かどうか
      *
      */
     public function formatJson(Model $model, $field){
         $value = array_shift($field);
+        if (!Validation::notEmpty($value)) {
+            return true;
+        }
         $result = json_decode($value);
         if ($result === null) {
             return false;
@@ -349,6 +391,9 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
      */
     public function cutField(Model $model, $field){
         $key = key($field);
+        if(empty($key)) {
+            return true;
+        }
         if (array_key_exists($key, $model->data[$model->alias])) {
             unset($model->data[$model->alias][$key]);
         }

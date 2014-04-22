@@ -24,7 +24,6 @@ class AdditionalValidationPatternsBehavior extends ModelBehavior {
         'empty' => array(
             'empty' => array(
                 'rule' => array('allDeny'),
-                'allowEmpty' => true,
                 'required' => false,
                 'last' => true
             ),
@@ -32,7 +31,6 @@ class AdditionalValidationPatternsBehavior extends ModelBehavior {
         'cut' => array(
             'cutField' => array(
                 'rule' => array('cutField'),
-                'allowEmpty' => true,
                 'required' => false,
                 'last' => true
             ),
@@ -40,7 +38,6 @@ class AdditionalValidationPatternsBehavior extends ModelBehavior {
         'ignore' => array(
             'cutField' => array(
                 'rule' => array('cutField'),
-                'allowEmpty' => true,
                 'required' => false,
                 'last' => true
             ),
@@ -54,24 +51,23 @@ class AdditionalValidationPatternsBehavior extends ModelBehavior {
         ),
         'date' => array(
             'date' => array(
-                'rule' => array('date'),
-                'allowEmpty' => true,
+                'rule' => array('formatDate'),
                 'required' => false,
                 'last' => true
             ),
         ),
         'alpha_numeric' => array(
             'alphaNumeric' => array(
-                'rule' => array('alphaNumber'),
-                'allowEmpty' => true,
+                'rule' => array('formatAlphaNumber'),
+                'required' => false,
                 'last' => true,
             ),
         ),
         // jpn: 数値チェック用
         'numeric' => array(
             'numeric' => array(
-                'rule' => '/^[0-9]+$/',
-                'allowEmpty' => true,
+                'rule' => array('formatNumeric'),
+                'required' => false,
                 'last' => true,
             ),
         ),
@@ -114,7 +110,6 @@ class AdditionalValidationPatternsBehavior extends ModelBehavior {
         'json' => array(
             'formatJson' => array(
                 'rule' => array('formatJson'),
-                'allowEmpty' => true,
                 'required' => false,
                 'last' => true,
             )
