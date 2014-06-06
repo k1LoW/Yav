@@ -22,7 +22,7 @@ before_script:
     'Plugin' => array('/home/travis/build/k1LoW/'),
     ));
     CakePlugin::loadAll();
-    ini_set('include_path',  '/home/travis/build/yav/yav/vendor/phpunit/phpunit' . PATH_SEPARATOR . ini_get('include_path'));
+    ini_set('include_path',  '/home/travis/build/k1LoW/Yav/vendor/phpunit/phpunit' . PATH_SEPARATOR . ini_get('include_path'));
     " > cakephp/app/Config/bootstrap.php
   - echo "<?php
     class DATABASE_CONFIG {
