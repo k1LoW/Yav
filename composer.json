@@ -15,5 +15,8 @@
     "require": {
         "ichikaway/cakeplus": "2.0.*@dev",
         "composer/installers": "*"
-    }
+    },
+    "require-dev": {
+		"phpunit/phpunit": "3.7.*"
+	}
 }
