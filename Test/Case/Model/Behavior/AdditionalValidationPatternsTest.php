@@ -68,6 +68,33 @@ class AdditionalValidationPatternsTest extends CakeTestCase {
     }
 
     /**
+     * test_empty
+     * jpn: emptyパターン
+     *
+     */
+    public function test_empty(){
+        $this->YavPost->validate['title'] = array('empty');
+        $data = array(
+            'YavPost' => array(
+                'title' => '',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->YavPost->validates();
+        $this->assertFalse( array_key_exists('title' , $this->YavPost->validationErrors ) );
+
+        $this->YavPost->validate['title'] = array('empty');
+        $data = array(
+            'YavPost' => array(
+                'title' => 'タイトル',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->YavPost->validates();
+        $this->assertTrue( array_key_exists('title' , $this->YavPost->validationErrors ) );
+    }
+
+    /**
      * test_alpha_numeric
      * jpn: notemptyパターンがない場合はフォーマットチェック系パターンは通す
      *

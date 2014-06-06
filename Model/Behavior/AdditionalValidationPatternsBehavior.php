@@ -25,6 +25,7 @@ class AdditionalValidationPatternsBehavior extends ModelBehavior {
             'empty' => array(
                 'rule' => array('allDeny'),
                 'required' => false,
+                'allowEmpty' => true, // required
                 'last' => true
             ),
         ),
