@@ -262,6 +262,48 @@ class AdditionalValidationRulesTest extends CakeTestCase {
     }
 
     /**
+     * test_inListFromConfigure
+     *
+     * jpn: Configure::write()で設定されているarray()の値以外だった場合false
+     */
+    public function test_inListFromConfigure(){
+        Configure::write('AdditionalValidationRulesTest.lists', array('hoge', 'fuga'));
+        $this->YavPost->validate['body'] = array(
+            'inListFromConfigure' => array(
+                'rule' => array('inListFromConfigure', 'AdditionalValidationRulesTest.lists')
+            ));
+        $data = array(
+            'YavPost' => array(
+                'body'  =>  'foo',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->YavPost->validates();
+        $this->assertTrue( array_key_exists('body' , $this->YavPost->validationErrors ) );
+    }
+
+    /**
+     * test_notInListFromConfigure
+     *
+     * jpn: Configure::write()で設定されているarray()の値だった場合false
+     */
+    public function test_notInListFromConfigure(){
+        Configure::write('AdditionalValidationRulesTest.lists', array('hoge', 'fuga'));
+        $this->YavPost->validate['body'] = array(
+            'notInListFromConfigure' => array(
+                'rule' => array('notInListFromConfigure', 'AdditionalValidationRulesTest.lists')
+            ));
+        $data = array(
+            'YavPost' => array(
+                'body'  =>  'hoge',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->YavPost->validates();
+        $this->assertTrue( array_key_exists('body' , $this->YavPost->validationErrors ) );
+    }
+
+    /**
      * test_hiraganaOnly
      *
      * jpn: hiraganaOnlyだと全角スペースを許さない

@@ -238,6 +238,24 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
     }
 
     /**
+     * notInListFromConfigure
+     * jpn: Configure::write()で設定されているarray()からnotInListを生成
+     *
+     */
+    public function notInListFromConfigure(Model $model, $field, $listname){
+        $value = array_shift($field);
+        $list = Configure::read($listname);
+        if ($list !== array_values($list)) {
+            // jpn: selectのoptionsにそのまま設置するような連想配列を想定
+            $list = array_keys($list);
+        }
+        foreach ($list as $k => $v) {
+            $list[$k] = (string)$v;
+        }
+        return !Validation::inList($value, $list);
+    }
+
+    /**
      * formatNumeric
      * jpn: AdditionalValidationPatternsBehavior用にemptyのときはtrue
      *
