@@ -384,6 +384,61 @@ class AdditionalValidationRulesTest extends CakeTestCase {
     }
 
     /**
+     * test_formatNaturalNumber
+     * jpn: 自然数チェック
+     *
+     */
+    public function test_formatNaturalNumber(){
+        $this->YavPost->validate['body'] = array(
+            'formatNaturalNumber' => array(
+                'rule' => array('formatNaturalNumber', true)
+            ));
+        $data = array(
+            'YavPost' => array(
+                'body'  => '0',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $result = $this->YavPost->validates();
+        $this->assertTrue($result);
+
+        $data = array(
+            'YavPost' => array(
+                'body'  => '-1',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $result = $this->YavPost->validates();
+        $this->assertTrue( array_key_exists('body' , $this->YavPost->validationErrors ) );
+
+        $data = array(
+            'YavPost' => array(
+                'body'  => 0,
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $result = $this->YavPost->validates();
+        $this->assertTrue($result);
+
+        $this->YavPost->validate['body'] = array(
+            'formatNaturalNumber' => array(
+                'rule' => array('formatNaturalNumber', false)
+            ));
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $result = $this->YavPost->validates();
+        $this->assertTrue( array_key_exists('body' , $this->YavPost->validationErrors ) );
+
+        $data = array(
+            'YavPost' => array(
+                'body'  => '',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $result = $this->YavPost->validates();
+        $this->assertTrue($result); // jpn: emptyについてはtrue
+    }
+
+    /**
      * test_compareWith
      *
      */

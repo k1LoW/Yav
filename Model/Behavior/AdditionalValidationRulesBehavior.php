@@ -269,6 +269,19 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
     }
 
     /**
+     * formatNaturalNumber
+     * jpn: AdditionalValidationPatternsBehavior用にemptyのときはtrue
+     *
+     */
+    public function formatNaturalNumber(Model $model, $field, $allowZero = false){
+        $value = array_shift($field);
+        if (!Validation::notEmpty($value)) {
+            return true;
+        }
+        return Validation::naturalNumber($value, $allowZero);
+    }
+
+    /**
      * formatAlphaNumber
      * jpn: AdditionalValidationPatternsBehavior用にemptyのときはtrue
      *
