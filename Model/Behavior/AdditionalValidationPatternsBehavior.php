@@ -59,7 +59,7 @@ class AdditionalValidationPatternsBehavior extends ModelBehavior {
         ),
         'alpha_numeric' => array(
             'alphaNumeric' => array(
-                'rule' => array('formatAlphaNumber'),
+                'rule' => array('formatAlphaNumeric'),
                 'required' => false,
                 'last' => true,
             ),

@@ -439,6 +439,53 @@ class AdditionalValidationRulesTest extends CakeTestCase {
     }
 
     /**
+     * test_formatAlphaNumeric
+     * jpn:
+     *
+     */
+    public function test_formatAlphaNumeric(){
+        $this->YavPost->validate['body'] = array(
+            'formatAlphaNumeric' => array(
+                'rule' => array('formatAlphaNumeric', true)
+            ));
+        $data = array(
+            'YavPost' => array(
+                'body'  => 'abc123',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $result = $this->YavPost->validates();
+        $this->assertTrue($result);
+
+        $data = array(
+            'YavPost' => array(
+                'body'  => '0',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $result = $this->YavPost->validates();
+        $this->assertTrue($result);
+
+        $data = array(
+            'YavPost' => array(
+                'body'  => '-1',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $result = $this->YavPost->validates();
+        $this->assertTrue( array_key_exists('body' , $this->YavPost->validationErrors ) );
+
+        $data = array(
+            'YavPost' => array(
+                'body'  => '-a',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $result = $this->YavPost->validates();
+        $this->assertTrue( array_key_exists('body' , $this->YavPost->validationErrors ) );
+    }
+
+    /**
      * test_compareWith
      *
      */

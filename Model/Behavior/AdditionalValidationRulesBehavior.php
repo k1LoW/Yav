@@ -282,16 +282,16 @@ class AdditionalValidationRulesBehavior extends ModelBehavior {
     }
 
     /**
-     * formatAlphaNumber
+     * formatAlphaNumeric
      * jpn: AdditionalValidationPatternsBehavior用にemptyのときはtrue
      *
      */
-    public function formatAlphaNumber(Model $model, $field){
+    public function formatAlphaNumeric(Model $model, $field){
         $value = array_shift($field);
         if (!Validation::notEmpty($value)) {
             return true;
         }
-        return Validation::alphaNumber($value);
+        return Validation::alphaNumeric($value);
     }
 
     /**
