@@ -1,4 +1,4 @@
-# Yav: Yer Another Validation Set
+# Yav: Yet Another Validation Set
 
 [![Build Status](https://travis-ci.org/k1LoW/Yav.png?branch=master)](https://travis-ci.org/k1LoW/Yav)
 
