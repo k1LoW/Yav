@@ -7,13 +7,13 @@
     "license": "MIT",
     "authors": [
         {
-                "name": "Ken'ichiro Oyama",
-                "homepage": "https://github.com/k1LoW",
-                "role": "Author"
-            }
+            "name": "Ken'ichiro Oyama",
+            "homepage": "https://github.com/k1LoW",
+            "role": "Author"
+        }
     ],
     "require": {
-        "ichikaway/cakeplus": "2.0.*@dev",
+        "ichikaway/cakeplus": "2.*",
         "composer/installers": "*"
     },
     "require-dev": {
