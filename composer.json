@@ -1,6 +1,6 @@
 {
     "name": "k1low/yav",
-    "description": "Yav: Yer Another Validation Set",
+    "description": "Yav: Yet Another Validation Set",
     "type": "cakephp-plugin",
     "keywords": ["cakephp", "validation"],
     "homepage": "https://github.com/k1LoW/Yav",
