@@ -123,9 +123,23 @@ class AdditionalValidationPatternsBehavior extends ModelBehavior {
                 'last' => true,
             ),
         ),
+        'hiragana_only' => array(
+            'hiraganaOnly' => array(
+                'rule' => array('hiraganaOnly'),
+                'allowEmpty' => true,
+                'last' => true,
+            ),
+        ),
+        'hiragana_and_space' => array(
+            'hiraganaAndSpace' => array(
+                'rule' => array('hiraganaAndSpace'),
+                'allowEmpty' => true,
+                'last' => true,
+            ),
+        ),
         'katakana_only' => array(
             'katakanaOnly' => array(
-                'rule' => array('zenkakuOnly'),
+                'rule' => array('katakanaOnly'),
                 'allowEmpty' => true,
                 'last' => true,
             ),
