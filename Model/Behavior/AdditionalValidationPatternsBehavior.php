@@ -29,14 +29,14 @@ class AdditionalValidationPatternsBehavior extends ModelBehavior {
                 'last' => true
             ),
         ),
-        'cut' => array(
-            'cutField' => array(
-                'rule' => array('cutField'),
+        'ignore' => array(
+            'empty' => array(
+                'rule' => array('allDeny'),
                 'required' => false,
                 'last' => true
             ),
         ),
-        'ignore' => array(
+        'cut' => array(
             'cutField' => array(
                 'rule' => array('cutField'),
                 'required' => false,

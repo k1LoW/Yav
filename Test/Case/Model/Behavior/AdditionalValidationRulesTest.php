@@ -587,4 +587,26 @@ class AdditionalValidationRulesTest extends CakeTestCase {
         $this->assertFalse( array_key_exists('title' , $this->YavPost->data['YavPost'] ) );
     }
 
+    /**
+     * test_allDeny
+     *
+     * jpn: 指定のフィールドに値が存在していたらfalse
+     */
+    public function test_allDeny(){
+        $this->YavPost->validate['id'] = array(
+            'allDeny' => array(
+                'rule' => array('allDeny')
+            ));
+        $data = array(
+            'YavPost' => array(
+                'id' => 2,
+                'title' => 'hoge',
+                'body'  =>  'hoge',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->YavPost->validates();
+        $this->assertTrue( array_key_exists('id' , $this->YavPost->validationErrors ) );
+    }
+
 }
