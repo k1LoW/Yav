@@ -181,4 +181,36 @@ class AdditionalValidationPatternsTest extends CakeTestCase {
         $this->assertTrue( array_key_exists('not_empty_with1' , $this->YavPost->validationErrors ) );
     }
 
+    /**
+     * test_ignore
+     *
+     */
+    public function test_ignore(){
+        $this->YavPost->validate['id'] = array('ignore');
+        $data = array(
+            'YavPost' => array(
+                'title' => 'タイトル',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->assertTrue($this->YavPost->validates());
+
+        $data = array(
+            'YavPost' => array(
+                'id' => 3,
+                'title' => 'タイトル',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->assertFalse($this->YavPost->validates());
+
+        $data = array(
+            'YavPost' => array(
+                'id' => null,
+                'title' => 'タイトル',
+            ),
+        );
+        $this->assertIdentical( $this->YavPost->create( $data ) , $data);
+        $this->assertFalse($this->YavPost->validates());
+    }
 }
